@@ -2,7 +2,7 @@
 name = "safety-app"
 version = "1.0.0"
 description = "A challenge for software engineers"
-authors = ["Olly Oechsle <olly@sablebio.com>"]
+authors = ["Project Author <project@author.com>"]
 readme = "README.md"
 
 [tool.poetry.dependencies]

@@ -1,107 +1,46 @@
-# A Drug Safety App
+# Practice Drug Safety Application
 
-## Scenario:
-You are tasked with building a small tool to visualize and explore safety data for drug targets. 
-This is a core part of what Sable Bio does, so we're looking to see how you handle working 
-with data and presenting it effectively.
+## Overview
+
+This application is a tool designed to visualize and explore safety data for drug targets. Built using the Django web framework, it provides a simple interface for users to review key attributes of genes—such as risk scores, literature occurrences, development levels, and expression patterns.
 
 ## Background
-You're working for Sable Bio, a biotech company that is developing a new drug safety app.
-The team uses the Django web framework to build the app, and have asked you to build
-a key new feature for scientists who want to explore drug safety data.
 
-## Task 1: Data Loading
-You are provided with data containing information about fictional drug targets
-in jsonl format.
+The application processes several JSON Lines (JSONL) files containing data about fictional drug targets. It loads the main gene records and supplements them with additional data from other files. Data validation is handled via Pydantic models, ensuring that only valid and meaningful data is stored in the database. The design focuses on clarity, modularity, and testability.
 
-* genes.jsonl: The ID and names for each gene
-* risk_score_data.jsonl: A numeric safety score for each gene. Higher values indicate higher risk.
-* lit_occurrence_data.jsonl: The number of paragraph mentions for the gene in scientific literature
-* development_level.jsonl: The development level of the gene (Tdark - not well studied, Tbio - biology undestood, Tclin - developed into clinical settings (eg a drug has been made against the target))
-* expression_data: How often the gene is expressed in different tissues (low tissue specificity, tissue enriched, high tissue specificity)
+## Data Description
 
-Write a script to:
-* Load the data from the various jsonl files
-* Ensure any missing or invalid values are handled gracefully
+The following data files are used:
 
-## Task 2: Visualize the Data
-Using the provided Django application, build a simple page that allows users to:
+- **genes.jsonl:** Contains the unique ID and display name for each gene.
+- **risk_score_data.jsonl:** Contains a numeric safety score for each gene (higher scores indicate higher risk).  
+  *(Keys: "gene_id" and "value")*
+- **lit_occurrence_data.jsonl:** Contains the number of paragraph mentions for each gene in scientific literature.  
+  *(Keys: "gene_id" and "value")*
+- **development_level.jsonl:** Contains the development level of each gene (e.g., Tdark, Tbio, Tclin).  
+  *(Keys: "gene_id" and "value")*
+- **expression_data.jsonl:** Contains information on gene expression in tissues (e.g., low tissue specificity, tissue enhanced, high tissue specificity).  
+  *(Keys: "gene_id" and "value")*
 
-* View the genes (eg in a table)
-* Split the data by a categorical feature (eg by development level)
+The data loader reads the main `genes.jsonl` file and, for each gene record, supplements it with the additional data from the other JSONL files. If any file or field is missing, it handles the situation gracefully.
 
-We leave the rest open to your imagination and interest, but here are some suggestions:
+## Features
 
-# Engineering thoughts to consider
-You could load the contents the data into the view at the time of request, but bear in mind that there
-are some 20,000 genes in the human genome, and many dozens of potential features.
+- **Data Loading:**  
+  A custom Django management command (`load_genes`) loads gene records from the main JSONL file and supplements them with data from additional files. The data is validated using Pydantic models before being saved to the database.
 
-You may want to consider loading once into a [database](https://docs.djangoproject.com/en/5.1/intro/tutorial02/) 
-and then serving the data from there, where filtering and sorting can be done on the database.
-
-## Data thoughts to consider
-There are patterns and correlations in the risk score data! Can you find any?
-
-Moreover - can your tool help a user find the patterns?
-
-## Tips
-If you work with us, you won’t be working in a vacuum, 
-Here are some suggestions that describe a bit of what we’re looking for:
-
-* We use poetry for dependency management. If you haven't used it before, check it out. 
-* We use Pydantic models rather than plain dictionaries. It helps to document the schema of the data and do some validation for us.
-* We like to use type hints for parameters and return types.
-* We use pytest for testing and we care a lot about high test coverage.
-* We prefer simplicity and rapidity to fiddly engineering setup - hence we quite like Django, even though it's not as shiny as a React app.
-* AI coding tools: You are welcome to use any AI coding tools you like, but you should understand the code you've made and be prepared to answer questions about it.
-
-(Even if you don't end up working with us, hopefully the above will be useful as these are best practices that
-are widely adopted in the industry.)
+- **Data Visualization:**  
+  A Django view renders a simple HTML page that displays the gene data in a table format. Users can view all genes along with their risk scores, literature occurrences, development levels, and expression information.
 
 ## Getting Started
 
-We suggest you make a virtual environment for development, so that anything you install does not 
-pollute your system Python installation:
+### Prerequisites
+
+Ensure you have Python installed. It’s recommended that you use a virtual environment so that project dependencies do not interfere with your system Python installation.
+
+Create and activate a virtual environment:
 
 ```bash
 python -m venv .venv
 source .venv/bin/activate
-```
-
-Then, to install dependencies, please run:
-
-```bash
-poetry install
-```
-
-To run the app, enter:
-
-```bash
-python manage.py runserver 8080
-```
-
-To run the tests, run:
-
-```
-pytest tests/
-```
-
-## What We’re looking for:
-
-Code quality: Is your code clean, modular, and documented with type hints? Does it avoid mixing of concerns (eg loading logic and view logic)
-
-Testing: We'd rather have less functionality than more bugs. Have you written tests for your code?
-
-Learning ability: We don't expect you to know everything in the list above, we are more interested how you approached the task.
-
-
-
-**Finally**: _Thank you_ for taking time out of your day to work on this challenge. We appreciate it can be time-consuming, especially if you have multiple interviews to prepare for.
-Whatever happens, we have designed this test to be reasonably interesting, and hope it offers the opportunity to learn something new.
-
-
-## Copyright and Confidentiality
-© 2025 Sable Bio Ltd. All rights reserved.
-
-This coding challenge is for assessment purposes only and is the property of Sable Bio. Please do not share, distribute, or post any part of the challenge publicly. We appreciate your understanding and cooperation!
 
