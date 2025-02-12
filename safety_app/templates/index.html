@@ -1,0 +1,41 @@
+<!-- safety_app/templates/index.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sable Safety App</title>
+</head>
+<body>
+  <h1>Sable Safety App</h1>
+  <p>{{ message }}</p>
+  <table border="1">
+    <thead>
+      <tr>
+        <th>Gene ID</th>
+        <th>Display Name</th>
+        <th>Risk Score</th>
+        <th>Literature Occurrences</th>
+        <th>Development Level</th>
+        <th>Expression</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for gene in genes %}
+        <tr>
+          <td>{{ gene.gene_id }}</td>
+          <td>{{ gene.display_name }}</td>
+          <td>{{ gene.risk_score }}</td>
+          <td>{{ gene.lit_occurrences }}</td>
+          <td>{{ gene.development_level }}</td>
+          <td>{{ gene.expression }}</td>
+        </tr>
+      {% empty %}
+        <tr>
+          <td colspan="6">No genes available.</td>
+        </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</body>
+</html>
